@@ -16,7 +16,7 @@ using UnityEngine;
 
 namespace ADKUnityNuGet
 {
-    internal sealed class ADKUnityNugetWindow : EditorWindow
+    public sealed class ADKUnityNugetWindow : EditorWindow
     {
         private enum Page
         {

@@ -14,50 +14,57 @@ using UnityEngine;
 
 namespace ADKUnityNuGet
 {
-    internal static class ADKUnityNugetMenu
+    [InitializeOnLoad]
+    public static class ADKUnityNugetMenu
     {
         [MenuItem("NuGet/Open Package Manager...", false, 0)]
-        private static void OpenPackageManager()
+        [MenuItem("Window/NuGet/Package Manager", false, 1500)]
+        public static void OpenPackageManager()
         {
             ADKUnityNugetWindow.OpenBrowse();
         }
 
         [MenuItem("NuGet/Restore Project Packages", false, 10)]
-        private static async void RestoreProjectPackages()
+        [MenuItem("Window/NuGet/Restore Packages", false, 1510)]
+        public static async void RestoreProjectPackages()
         {
             try
             {
-                await NuGetPackageInstaller.RestoreAsync(message => Debug.Log($"[ADK Unity Nuget] {message}"));
-                EditorUtility.DisplayDialog("ADK Unity Nuget", "Tracked NuGet packages were restored successfully.", "OK");
+                await NuGetPackageInstaller.RestoreAsync(message => Debug.Log($"[Unity NuGet] {message}"));
+                EditorUtility.DisplayDialog("Unity NuGet", "Tracked NuGet packages were restored successfully.", "OK");
             }
             catch (Exception exception)
             {
                 Debug.LogException(exception);
-                EditorUtility.DisplayDialog("ADK Unity Nuget", exception.Message, "OK");
+                EditorUtility.DisplayDialog("Unity NuGet", exception.Message, "OK");
             }
         }
 
         [MenuItem("NuGet/Explore Dependency Graph...", false, 20)]
-        private static void ExploreDependencyGraph()
+        [MenuItem("Window/NuGet/Dependency Graph", false, 1520)]
+        public static void ExploreDependencyGraph()
         {
             ADKUnityNugetDependencyWindow.Open();
         }
 
         [MenuItem("NuGet/Check Installed Package Updates...", false, 30)]
-        private static void CheckInstalledPackageUpdates()
+        [MenuItem("Window/NuGet/Check for Updates", false, 1530)]
+        public static void CheckInstalledPackageUpdates()
         {
             ADKUnityNugetWindow.OpenUpdates(true);
         }
 
         [MenuItem("NuGet/Project Settings...", false, 50)]
-        private static void OpenProjectSettings()
+        [MenuItem("Window/NuGet/Settings", false, 1540)]
+        public static void OpenProjectSettings()
         {
             ADKUnityNugetSettings.EnsureInitialized();
             SettingsService.OpenProjectSettings(ADKUnityNugetSettings.SettingsMenuPath);
         }
 
-        [MenuItem("NuGet/About ADK Unity Nuget", false, 100)]
-        private static void About()
+        [MenuItem("NuGet/About Unity NuGet", false, 100)]
+        [MenuItem("Window/NuGet/About", false, 1550)]
+        public static void About()
         {
             EditorUtility.DisplayDialog(
                 "Unity NuGet",

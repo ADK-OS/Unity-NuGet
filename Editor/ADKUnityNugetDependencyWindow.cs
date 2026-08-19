@@ -16,7 +16,7 @@ using UnityEngine;
 
 namespace ADKUnityNuGet
 {
-    internal sealed class ADKUnityNugetDependencyWindow : EditorWindow
+    public sealed class ADKUnityNugetDependencyWindow : EditorWindow
     {
         private Vector2 scroll;
         private readonly Dictionary<string, bool> foldouts = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
