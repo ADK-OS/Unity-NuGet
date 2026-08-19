@@ -1,0 +1,21 @@
+{
+  "name": "com.asheshdevelopment.adk-unity-nuget",
+  "version": "0.3.0",
+  "displayName": "Unity NuGet",
+  "description": "Reusable NuGet package manager for Unity Editor projects.",
+  "unity": "2021.3",
+  "author": {
+    "name": "Ashesh Development",
+    "url": "https://github.com/ADK-OS"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ADK-OS/Unity-Nuget.git"
+  },
+  "keywords": [
+    "nuget",
+    "package-manager",
+    "editor",
+    "adk"
+  ]
+}

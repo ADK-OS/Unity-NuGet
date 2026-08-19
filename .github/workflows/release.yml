@@ -1,0 +1,72 @@
+name: Release Package
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Release tag (e.g., v0.3.0)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine Release Tag & Version
+        id: vars
+        run: |
+          if [ -n "${{ github.event.inputs.tag_name }}" ]; then
+            TAG="${{ github.event.inputs.tag_name }}"
+          else
+            TAG="${GITHUB_REF#refs/tags/}"
+          fi
+          VERSION="${TAG#v}"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Processing Release for Tag: $TAG (Version: $VERSION)"
+
+      - name: Extract Release Notes from CHANGELOG.md
+        id: changelog
+        run: |
+          VERSION="${{ steps.vars.outputs.version }}"
+          # Extract notes between ## [VERSION] and the next ## [VERSION]
+          NOTES=$(sed -n "/^## $VERSION/,/^## [0-9]/p" CHANGELOG.md | sed '1d;$d')
+          if [ -z "$NOTES" ]; then
+            NOTES="Release $VERSION"
+          fi
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          echo "$NOTES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create Package Zip Archive
+        run: |
+          TAG="${{ steps.vars.outputs.tag }}"
+          ZIP_NAME="Unity-Nuget-${TAG}.zip"
+          # Archive package assets (excluding .git and development temp files)
+          zip -r "$ZIP_NAME" package.json README.md CHANGELOG.md LICENSE Editor Documentation~ -x "*.meta.git*"
+          echo "Created $ZIP_NAME"
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.vars.outputs.tag }}
+          name: Unity NuGet ${{ steps.vars.outputs.tag }}
+          body: ${{ steps.changelog.outputs.notes }}
+          draft: false
+          prerelease: false
+          files: Unity-Nuget-*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

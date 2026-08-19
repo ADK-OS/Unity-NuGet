@@ -1,0 +1,16 @@
+{
+  "name": "AsheshDevelopment.ADKUnityNuget.Editor",
+  "rootNamespace": "ADKUnityNuGet",
+  "references": [],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
