@@ -39,7 +39,7 @@ Write-Host "`n[1/4] Staging changes..." -ForegroundColor Yellow
 git add .
 
 # 3. Commit
-$commitMsg = if (![string]::IsNullOrWhiteSpace($Message)) { $Message } else { "Release $tag: Unity NuGet package" }
+$commitMsg = if (![string]::IsNullOrWhiteSpace($Message)) { $Message } else { "Release $($tag) - Unity NuGet package" }
 Write-Host "`n[2/4] Committing changes: '$commitMsg'..." -ForegroundColor Yellow
 $status = git status --porcelain
 if ($status) {
