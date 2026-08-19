@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ADK-OS/Unity-Nuget.git"
+    "url": "https://github.com/ADK-OS/Unity-NuGet.git"
   },
   "keywords": [
     "nuget",

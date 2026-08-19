@@ -64,4 +64,4 @@ git push origin $tag --force
 
 Write-Host "`n✔ Release $tag pushed successfully!" -ForegroundColor Green
 Write-Host "GitHub Actions will now automatically build and publish the release at:" -ForegroundColor Green
-Write-Host "https://github.com/ADK-OS/Unity-Nuget/releases`n" -ForegroundColor Cyan
+Write-Host "https://github.com/ADK-OS/Unity-NuGet/releases`n" -ForegroundColor Cyan

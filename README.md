@@ -24,7 +24,7 @@ Unity NuGet (ADK) is a lightweight, reusable Unity Editor package manager for di
 In Unity, open **Window > Package Manager**, select **+ > Add package from git URL...**, then enter:
 
 ```text
-https://github.com/ADK-OS/Unity-Nuget.git
+https://github.com/ADK-OS/Unity-NuGet.git
 ```
 
 You can also add it directly to `Packages/manifest.json`:
@@ -32,7 +32,7 @@ You can also add it directly to `Packages/manifest.json`:
 ```json
 {
   "dependencies": {
-    "com.asheshdevelopment.adk-unity-nuget": "https://github.com/ADK-OS/Unity-Nuget.git"
+    "com.asheshdevelopment.adk-unity-nuget": "https://github.com/ADK-OS/Unity-NuGet.git"
   }
 }
 ```
@@ -157,7 +157,7 @@ Minimum declared Unity version: `2021.3`.
 
 ## Repository
 
-`ADK-OS/Unity-Nuget` — [https://github.com/ADK-OS/Unity-Nuget.git](https://github.com/ADK-OS/Unity-Nuget.git)
+`ADK-OS/Unity-NuGet` — [https://github.com/ADK-OS/Unity-NuGet.git](https://github.com/ADK-OS/Unity-NuGet.git)
 
 ## License
 

@@ -6,7 +6,7 @@ All notable changes to this project are documented in this file in accordance wi
 
 ### Changed
 
-- **Repository URL & Rebranding**: Updated repository URL to `https://github.com/ADK-OS/Unity-Nuget.git` and rebranded display name to **Unity NuGet**.
+- **Repository URL & Rebranding**: Updated repository URL to `https://github.com/ADK-OS/Unity-NuGet.git` and rebranded display name to **Unity NuGet**.
 - **Namespace Refactoring**: Changed codebase namespace to `ADKUnityNuGet` across all C# source files and updated `rootNamespace` in `ADKUnityNuget.Editor.asmdef`.
 - **Semantic Versioning Standard**: Formalized Semantic Versioning compliance and version-tracking across `package.json`, editor UI footers, dialogs, and HTTP User-Agent headers (`ADK-Unity-Nuget/0.3.0`).
 
