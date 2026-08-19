@@ -1,33 +1,53 @@
 ![Unity NuGet](Documentation~/Images/ADKUnityNuget.jpg)
 
-# Unity NuGet
+<div align="center">
 
-Unity NuGet (ADK) is a lightweight, reusable Unity Editor package manager for discovering, installing, restoring, updating, and removing managed NuGet packages directly inside Unity projects. It provides a native, zero-dependency workflow within Unity Editor using an independent implementation, project settings model, package layout, dependency tracker, and editor UI.
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Unity](https://img.shields.io/badge/unity-2021.3%2B-blue.svg)](https://unity.com/)
+[![Semantic Versioning](https://img.shields.io/badge/semver-2.0.0-informational)](https://semver.org/#semantic-versioning-200)
+[![Release](https://img.shields.io/github/v/release/ADK-OS/Unity-NuGet?include_prereleases&color=blue&label=release)](https://github.com/ADK-OS/Unity-NuGet/releases)
 
-## Purpose
+</div>
 
-- Search NuGet.org directly from the Unity Editor.
-- Browse package metadata and available versions.
-- Install a selected package and recursively resolve its NuGet dependencies.
-- Prefer Unity-compatible managed framework assets from `lib/` or `ref/`.
-- Extract managed assemblies and native runtime assets into a configurable folder under `Assets/`.
-- Persist the install location and package preferences automatically per Unity project.
-- Restore tracked packages after a clean checkout or deleted package assets.
-- Track direct and dependency packages and display their dependency graph.
-- Check direct installs for newer package versions and update them from the Editor UI.
-- Reuse the tool across projects as a UPM Git dependency.
+# What is Unity NuGet?
 
-## Setup
+**Unity NuGet** is a lightweight, reusable NuGet package manager built from scratch to run inside the Unity Editor. NuGet is the standard package management system for .NET, making it easy to discover, distribute, and consume reusable assemblies and libraries.
 
-### Unity Package Manager via Git URL
+Unity NuGet provides a modern, visual editor interface within Unity to search [nuget.org](https://www.nuget.org/), inspect package metadata, install packages along with their recursive dependencies, explore dependency graphs, scan for updates, and restore project packages seamlessly after clean checkouts.
 
-In Unity, open **Window > Package Manager**, select **+ > Add package from git URL...**, then enter:
+> [!NOTE]
+> **Inspiration**: This project is inspired by the workflow of [NuGetForUnity](https://github.com/GlitchEnzo/NuGetForUnity), utilizing an independent implementation, dedicated project settings model, safe asset migration system, interactive dependency tracker, and modern Unity Editor UI.
 
-```text
-https://github.com/ADK-OS/Unity-NuGet.git
-```
+---
 
-You can also add it directly to `Packages/manifest.json`:
+## Key Features
+
+- 🔍 **Search & Browse NuGet.org**: Search packages by name, title, or keywords with live download metrics, authors, descriptions, and version selector.
+- 📦 **Recursive Dependency Resolution**: Inspects `.nuspec` manifests within `.nupkg` archives and recursively installs required dependencies.
+- 🎯 **Unity Framework Targeting**: Automatically prioritizes Unity-compatible target frameworks (`netstandard2.1` > `netstandard2.0` > `net48` down to `net45`).
+- 📁 **Configurable Install Folder & Safe Migration**: Easily set or browse custom package install locations under `Assets/`. Migrates existing packages safely and guards against overwriting non-empty folders.
+- 🔄 **Parallel Update Checking**: Quickly scans all direct package installations in parallel against NuGet.org and performs one-click updates.
+- 🌳 **Visual Dependency Graph**: Dedicated interactive tree view to inspect direct vs. transitive dependency relationships with circular reference protection.
+- ♻️ **Project Package Restore**: Automatically re-downloads and reinstalls all tracked packages from `ProjectSettings/ADKUnityNuget.json`.
+- ⚡ **Zero Third-Party Dependencies**: Built entirely with standard .NET BCL and Unity Editor APIs—no external DLLs or CLI tools required.
+
+---
+
+## Installation & Setup
+
+### Option 1: Unity Package Manager (via Git URL)
+
+1. In the Unity Editor, open **Window > Package Manager**.
+2. Click the **+** button in the top-left corner and select **Add package from git URL...**.
+3. Enter the repository URL:
+   ```text
+   https://github.com/ADK-OS/Unity-NuGet.git
+   ```
+4. Click **Add**.
+
+### Option 2: Add to `Packages/manifest.json`
+
+Add Unity NuGet directly to your project's `Packages/manifest.json` under `dependencies`:
 
 ```json
 {
@@ -37,70 +57,66 @@ You can also add it directly to `Packages/manifest.json`:
 }
 ```
 
-## First Launch and Install Location
+*To lock to a specific version (e.g., `v0.3.0`), append `#v0.3.0` to the URL:*
+```text
+https://github.com/ADK-OS/Unity-NuGet.git#v0.3.0
+```
 
-Open **NuGet > Open Package Manager...**.
+---
 
-On the first launch in a project, Unity NuGet automatically creates and saves its project settings with this default install location:
+## Getting Started
 
+### 1. Opening Package Manager
+Access the package manager from the top Unity menu: **NuGet > Open Package Manager...**.
+
+On first launch, Unity NuGet initializes project settings with the default install location:
 ```text
 Assets/Plugins/ADKUnityNuget
 ```
 
-The path must remain inside the current project's `Assets/` folder. It can be changed at any time through **NuGet > Project Settings...** by typing an Assets-relative path or selecting **Browse...**.
+### 2. Online Search & Installation
+1. Navigate to the **Online** tab.
+2. Enter a package ID or keyword (e.g., `Newtonsoft.Json`, `LiteDB`, `YamlDotNet`) and click **Search** (or press Enter).
+3. Select a package from the results list to view its description, authors, downloads, and available versions.
+4. Choose the desired version and click **Install Selected Version**. Unity NuGet will resolve and install all dependencies automatically.
 
-Settings are automatically saved to:
+### 3. Reviewing Installed Packages & Restoration
+- In the **Installed** tab, review all currently tracked direct installs and dependencies.
+- Filter the list using the search box.
+- Click **Restore** to re-download all tracked project packages.
+- Click **Remove** on any package to safely uninstall its folder and manifest entry.
 
-```text
-ProjectSettings/ADKUnityNugetSettings.json
-```
+### 4. Scanning for Updates
+- Open the **Updates** tab (or select **NuGet > Check Installed Package Updates...**).
+- Unity NuGet scans all direct installations concurrently and displays available newer versions with a one-click **Update** button.
 
-When the install location is changed and the previous package directory already exists, Unity NuGet migrates that directory to the new location. A non-empty target folder is rejected to avoid overwriting unrelated project assets.
+### 5. Exploring Dependency Graph
+- Select **NuGet > Explore Dependency Graph...** to open the hierarchical dependency tree visualizer.
 
-## NuGet Menu
+### 6. Configuring Project Settings
+- Open **NuGet > Project Settings...** (or via **Edit > Project Settings > ADK Unity NuGet**).
+- Change the install directory by typing or using **Browse...**. Changing this folder automatically migrates existing installed package folders.
 
-Unity NuGet adds a dedicated top-level **NuGet** menu:
+---
 
-- **Open Package Manager...** — opens the main Online / Installed / Updates window.
-- **Restore Project Packages** — restores all directly tracked packages and their dependencies.
-- **Explore Dependency Graph...** — displays tracked direct/dependency relationships.
-- **Check Installed Package Updates...** — opens the Updates tab and immediately scans direct installs.
-- **Project Settings...** — opens project-scoped Unity NuGet settings.
-- **About ADK Unity Nuget** — displays package version information.
+## Target Framework Prioritization
 
-## Package Manager Window
+Unity NuGet prioritizes framework assets extracted from `lib/` and `ref/` directories in the following order:
 
-The editor window uses three focused views:
+$$\text{netstandard2.1} \longrightarrow \text{netstandard2.0} \longrightarrow \text{net48} \longrightarrow \text{net472} \longrightarrow \dots \longrightarrow \text{net45}$$
 
-### Online
+Managed assemblies (`.dll`), debug symbols (`.pdb`), and documentation (`.xml`) are extracted, along with native runtime libraries found in `runtimes/.../native/`.
 
-Search NuGet.org, inspect package descriptions/authors/download counts, choose a version, and install it into the configured Assets location.
+---
 
-### Installed
+## State Persistence
 
-Review direct installs and dependencies, filter the list, restore tracked packages, or remove a selected package.
+Configuration and installation states are kept clean inside `ProjectSettings/`, ensuring they can be tracked in version control alongside Unity settings:
 
-### Updates
+- **Project Configuration:** `ProjectSettings/ADKUnityNugetSettings.json` (stores install directory path, pre-release preferences).
+- **Package Manifest:** `ProjectSettings/ADKUnityNuget.json` (stores tracked package IDs, versions, direct vs. dependency flags, and dependency tree links).
 
-Scan all directly installed packages in parallel, compare installed versions with NuGet.org, and update individual packages.
-
-## Package State
-
-Project installation state is stored in:
-
-```text
-ProjectSettings/ADKUnityNuget.json
-```
-
-The manifest tracks package ID, version, whether the package was installed directly or as a dependency, and the package dependency IDs used by the dependency graph.
-
-## Framework Selection
-
-Unity NuGet prefers common Unity-compatible target frameworks in this order:
-
-`netstandard2.1`, `netstandard2.0`, `net48`, `net472`, `net471`, `net47`, `net462`, `net461`, `net46`, `net452`, `net45`, then other compatible-looking managed targets.
-
-If a package has no `lib/` or `ref/` assets, it may still install native assets, but packages that depend on build targets, MSBuild transforms, analyzers, source generators, or platform-specific NuGet install scripts are not fully supported.
+---
 
 ## Semantic Versioning (SemVer 2.0.0)
 
@@ -108,56 +124,53 @@ This project strictly adheres to the [Semantic Versioning 2.0.0 Specification](h
 
 $$\text{MAJOR}.\text{MINOR}.\text{PATCH}$$
 
-1. **MAJOR** (`x.0.0`): Incompatible API changes, major architectural redesigns, breaking manifest schema changes, or bumped minimum Unity engine version requirements.
-2. **MINOR** (`0.x.0`): New features, namespace refactoring, non-breaking workflow enhancements, new editor windows, and backwards-compatible improvements.
-3. **PATCH** (`0.0.x`): Backwards-compatible bug fixes, performance optimizations, documentation updates, and patch-level stability fixes.
+1. **MAJOR** (`x.0.0`): Breaking changes, architectural redesigns, or upgraded Unity engine prerequisites.
+2. **MINOR** (`0.x.0`): New features, non-breaking workflow enhancements, new editor windows, and backwards-compatible improvements.
+3. **PATCH** (`0.0.x`): Backwards-compatible bug fixes, performance optimizations, and documentation updates.
 
-Internal package resolution and sorting also implement full SemVer 2.0.0 precedence rules (numeric identifier comparison, dot-separated pre-release segments, and build metadata exclusion).
+Internal version comparison and resolution also implement full SemVer 2.0.0 Section 11 precedence rules (numeric identifier sorting, dot-separated pre-release segments, and build metadata exclusion).
+
+---
 
 ## Progress Tracking & Development Status
 
 | Feature / Milestone | Version | Status | Description |
 | :--- | :---: | :---: | :--- |
-| **NuGet.org v3 Search & Metadata** | `0.1.0` | Done | Search packages, query version indices, display descriptions and downloads. |
-| **Recursive Dependency Resolution** | `0.1.0` | Done | Parse `.nuspec` XML, extract framework-specific dependencies recursively. |
-| **Framework Compatibility Scoring** | `0.1.0` | Done | Automatic prioritization of `.NET Standard 2.1/2.0` and `.NET Framework`. |
-| **3-Tab Editor Package Manager UI** | `0.2.0` | Done | Online discovery, Installed management, and Update checking in `ADKUnityNugetWindow`. |
-| **Project Settings Provider** | `0.2.0` | Done | Integrated with Unity Project Settings (`ProjectSettings/ADKUnityNugetSettings.json`). |
-| **Safe Path Migration** | `0.2.0` | Done | Automatic asset directory relocation with non-empty destination guard. |
-| **Dependency Graph Viewer** | `0.2.0` | Done | Interactive foldout tree view visualizing direct and transitive dependencies. |
-| **Update Scanning & One-Click Upgrade** | `0.2.0` | Done | Parallel version query for all direct installs. |
-| **Namespace Refactor (`ADKUnityNuGet`)** | `0.3.0` | Done | Unified clean namespace across all C# code and assembly definition. |
-| **Repository URL & Rebranding** | `0.3.0` | Done | Updated repo link to `ADK-OS/Unity-Nuget` and standardized branding. |
-| **Progress & SemVer Documentation** | `0.3.0` | Done | Detailed changelog and tracking matrices for release management. |
-| **Transitive Dependency Pruning / GC** | `0.4.0` | Planned | Automatic cleanup of orphaned dependencies when root packages are removed. |
-| **Plugin Platform Import Settings** | `0.4.0` | Planned | Automated `PluginImporter` RID platform configuration for native runtimes. |
-| **Private & Authenticated NuGet Feeds** | `0.5.0` | Planned | Support custom package sources (Azure DevOps, GitHub Packages, BaGet). |
+| **NuGet.org v3 Search & Metadata** | `0.1.0` | ✅ Done | Search packages, query version indices, display descriptions and downloads. |
+| **Recursive Dependency Resolution** | `0.1.0` | ✅ Done | Parse `.nuspec` XML, extract framework-specific dependencies recursively. |
+| **Framework Compatibility Scoring** | `0.1.0` | ✅ Done | Automatic prioritization of `.NET Standard 2.1/2.0` and `.NET Framework`. |
+| **3-Tab Editor Package Manager UI** | `0.2.0` | ✅ Done | Online discovery, Installed management, and Update checking in `ADKUnityNugetWindow`. |
+| **Project Settings Provider** | `0.2.0` | ✅ Done | Integrated with Unity Project Settings (`ProjectSettings/ADKUnityNugetSettings.json`). |
+| **Safe Path Migration** | `0.2.0` | ✅ Done | Automatic asset directory relocation with non-empty destination guard. |
+| **Dependency Graph Viewer** | `0.2.0` | ✅ Done | Interactive foldout tree view visualizing direct and transitive dependencies. |
+| **Update Scanning & One-Click Upgrade** | `0.2.0` | ✅ Done | Parallel version query for all direct installs. |
+| **Namespace Refactor (`ADKUnityNuGet`)** | `0.3.0` | ✅ Done | Unified clean namespace across all C# code and assembly definition. |
+| **Repository URL & Rebranding** | `0.3.0` | ✅ Done | Updated repo link to `ADK-OS/Unity-NuGet` and standardized branding. |
+| **Progress & SemVer Documentation** | `0.3.0` | ✅ Done | Detailed changelog and tracking matrices for release management. |
+| **GitHub Actions Release Automation** | `0.3.0` | ✅ Done | Automated package zipping and release publishing on version tag pushes. |
+| **Transitive Dependency Pruning / GC** | `0.4.0` | 📋 Planned | Automatic cleanup of orphaned dependencies when root packages are removed. |
+| **Plugin Platform Import Settings** | `0.4.0` | 📋 Planned | Automated `PluginImporter` RID platform configuration for native runtimes. |
+| **Private & Authenticated NuGet Feeds** | `0.5.0` | 📋 Planned | Support custom package sources (Azure DevOps, GitHub Packages, BaGet). |
 
-## Dependencies
-
-Unity NuGet has zero third-party package dependencies. It uses Unity Editor APIs and standard .NET APIs available to supported Unity versions.
-
-NuGet packages installed through the tool may have their own licenses and dependencies. Review each package's license before redistribution.
-
-## Version
-
-Current package version: `0.3.0`.
-
-Minimum declared Unity version: `2021.3`.
+---
 
 ## Limitations
 
-- NuGet.org is currently the default package source.
-- Authenticated/private feeds are planned for upcoming releases.
+- NuGet.org is currently the primary package source (private feed support planned).
 - NuGet `packages.config`, MSBuild `.targets`/`.props`, install scripts, analyzers, and source generators are not executed.
-- Dependency range handling covers standard NuGet interval syntax and plain minimum versions, but remains intentionally lightweight rather than a complete NuGet resolver.
-- Native runtime assets are copied, but Unity import/platform settings are not automatically customized per RID.
-- Removing a direct package does not automatically garbage-collect dependencies because another package may still rely on them.
-- Assembly compatibility ultimately depends on the target Unity version, scripting backend, API compatibility level, platform, and the NuGet package itself.
+- Dependency range handling covers standard NuGet interval syntax and plain minimum versions.
+- Native runtime assets are extracted, but platform import settings are not yet automatically assigned per RID.
+- Removing a direct package does not automatically garbage-collect dependencies if other packages share them.
+- Assembly compatibility depends on the project's scripting backend (.NET Standard 2.1 / .NET Framework), target platform, and the NuGet package.
 
-## Repository
+---
 
-`ADK-OS/Unity-NuGet` — [https://github.com/ADK-OS/Unity-NuGet.git](https://github.com/ADK-OS/Unity-NuGet.git)
+## Acknowledgements
+
+- Inspired by [NuGetForUnity](https://github.com/GlitchEnzo/NuGetForUnity).
+- Follows the [Semantic Versioning 2.0.0 Specification](https://semver.org/#semantic-versioning-200) by Tom Preston-Werner ([CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)).
+
+---
 
 ## License
 
